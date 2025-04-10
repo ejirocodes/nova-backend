@@ -17,6 +17,11 @@ export class UserModel {
     return await this.model.get({ user_id: userId });
   }
 
+  async findOneByClerkId(clerkId: string): Promise<User | null> {
+    const result = await this.model.scan('clerk_id').eq(clerkId).exec();
+    return result.count > 0 ? result[0] : null;
+  }
+
   async findAll(): Promise<User[]> {
     return await this.model.scan().exec();
   }

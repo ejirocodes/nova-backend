@@ -7,6 +7,13 @@ export const UserSchema = new Schema(
       hashKey: true,
       required: true,
     },
+    clerk_id: {
+      type: String,
+      index: {
+        name: 'clerk_id-index',
+        type: 'global',
+      },
+    },
     email: {
       type: String,
       required: true,
