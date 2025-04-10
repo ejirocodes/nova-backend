@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { DynamooseModule } from 'nestjs-dynamoose';
 import { UserSchema } from './schemas/user.schema';
 import { UserModel } from './models/user.model';
-import { UsersControllers } from './controllers/users.controllers';
+import { UsersController } from './controllers/users.controller';
 import { UsersService } from './services/users.service';
 
 @Module({
@@ -19,6 +19,6 @@ import { UsersService } from './services/users.service';
   ],
   providers: [UserModel, UsersService],
   exports: [UserModel],
-  controllers: [UsersControllers],
+  controllers: [UsersController],
 })
 export class UsersModule {}

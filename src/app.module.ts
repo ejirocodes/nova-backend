@@ -6,10 +6,12 @@ import { LoggerModule } from './config/logger.module';
 import { DynamooseModule } from 'nestjs-dynamoose';
 import { UsersModule } from './users/users.module';
 import { PriceModule } from './price/price.module';
+import { GuessModule } from './guess/guess.module';
 
 @Module({
   imports: [
     UsersModule,
+    GuessModule,
     PriceModule,
     ConfigifyModule.forRootAsync(),
     DynamooseModule.forRootAsync({

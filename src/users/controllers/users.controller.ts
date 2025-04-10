@@ -4,7 +4,7 @@ import { User } from '../interfaces/user.interface';
 import { CreateUserDto } from '../dtos/create-user.dto';
 
 @Controller('users')
-export class UsersControllers {
+export class UsersController {
   constructor(private readonly usersSevice: UsersService) {}
 
   @Post()

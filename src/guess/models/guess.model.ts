@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel, Model } from 'nestjs-dynamoose';
+import { GuessDirection, GuessResponseDto } from '../dtos/create-guess';
 
-export interface IGuess {
+export class Guess {
   guessId: string;
   userId: string;
-  direction: 'up' | 'down';
+  direction: GuessDirection;
   startPrice: number;
   endPrice?: number;
   createdAt: string;
@@ -20,23 +21,30 @@ export interface GuessKey {
 export class GuessModel {
   constructor(
     @InjectModel('Guess')
-    private readonly model: Model<IGuess, GuessKey>,
+    private readonly model: Model<Guess, GuessKey>,
   ) {}
 
-  async create(guess: IGuess): Promise<IGuess> {
-    return await this.model.create(guess);
+  async create(guess: Guess): Promise<GuessResponseDto> {
+    const result = await this.model.create(guess);
+
+    return {
+      guessId: result.guessId,
+      direction: result.direction,
+      startPrice: result.startPrice,
+      createdAt: result.createdAt,
+    };
   }
 
-  async findOne(guessId: string): Promise<IGuess | null> {
+  async findOne(guessId: string): Promise<Guess | null> {
     return await this.model.get({ guessId });
   }
 
-  async findByUserId(userId: string): Promise<IGuess[]> {
+  async findByUserId(userId: string): Promise<Guess[]> {
     const result = await this.model.scan('userId').eq(userId).exec();
     return result;
   }
 
-  async findActiveByUserId(userId: string): Promise<IGuess | null> {
+  async findActiveByUserId(userId: string): Promise<Guess | null> {
     const result = await this.model
       .scan('userId')
       .eq(userId)
@@ -46,7 +54,7 @@ export class GuessModel {
     return result.count > 0 ? result[0] : null;
   }
 
-  async update(guessId: string, updateData: Partial<IGuess>): Promise<IGuess> {
+  async update(guessId: string, updateData: Partial<Guess>): Promise<Guess> {
     return await this.model.update({ guessId }, updateData);
   }
 
