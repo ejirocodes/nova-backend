@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel, Model } from 'nestjs-dynamoose';
-import { GuessDirection, GuessResponseDto } from '../dtos/create-guess';
+import { GuessDirection, GuessResponseDto } from '../dtos/create-guess.dto';
 
 export class Guess {
   guessId: string;

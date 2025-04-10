@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Guess, GuessModel } from '../models/guess.model';
-import { CreateGuessDto } from '../dtos/create-guess';
+import { CreateGuessDto } from '../dtos/create-guess.dto';
 import { generateUniqueId } from 'src/helpers/uuid.generator';
 @Injectable()
 export class GuessService {

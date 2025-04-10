@@ -18,7 +18,7 @@ export class CreateGuessDto {
   @IsEnum(GuessDirection, {
     message: 'Direction must be one of: up, down',
   })
-  direction: GuessDirection = GuessDirection['up'];
+  direction: GuessDirection;
 }
 
 export class GuessResponseDto {

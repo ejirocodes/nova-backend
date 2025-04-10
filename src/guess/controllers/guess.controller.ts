@@ -1,7 +1,7 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GuessService } from '../services/guess.service';
-import { CreateGuessDto, GuessResponseDto } from '../dtos/create-guess';
+import { CreateGuessDto, GuessResponseDto } from '../dtos/create-guess.dto';
 
 @ApiTags('Guess')
 @Controller('guess')
