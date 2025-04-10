@@ -36,4 +36,7 @@ export class AppConfig {
 
   @Value('AWS_SECRET_ACCESS_KEY')
   awsSecretAccessKey: string;
+
+  @Value('CRYPTOCURRENCY_API_URL')
+  cryptocurrencyApiUrl: string;
 }

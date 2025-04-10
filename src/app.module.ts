@@ -5,10 +5,12 @@ import { ConfigifyModule } from '@itgorillaz/configify';
 import { LoggerModule } from './config/logger.module';
 import { DynamooseModule } from 'nestjs-dynamoose';
 import { UsersModule } from './users/users.module';
+import { PriceModule } from './price/price.module';
 
 @Module({
   imports: [
     UsersModule,
+    PriceModule,
     ConfigifyModule.forRootAsync(),
     DynamooseModule.forRootAsync({
       useFactory: () => {

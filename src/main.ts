@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { AppConfig, AppLoggerService } from './config';
 import { ValidationPipe } from '@nestjs/common';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   try {
@@ -22,6 +23,16 @@ async function bootstrap() {
 
     app.useLogger(logger);
     app.setGlobalPrefix('api/v1');
+
+    const config = new DocumentBuilder()
+      .setTitle('Nova backend')
+      .setDescription('The backend API of Nova')
+      .setVersion('1.0')
+      .addTag('nova')
+      .build();
+
+    const documentFactory = () => SwaggerModule.createDocument(app, config);
+    SwaggerModule.setup('/api/v1/docs', app, documentFactory);
 
     const { port, host, nodeEnv } = appConfig;
 
