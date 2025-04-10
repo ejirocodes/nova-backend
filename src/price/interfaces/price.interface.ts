@@ -10,12 +10,16 @@ export class BitcoinPriceData {
 }
 
 export class BitcoinHistoryPoint {
+  @ApiProperty({ type: String })
   time: string;
+  @ApiProperty({ type: Number })
   price: number;
+  @ApiProperty({ type: Number })
   volume: number;
 }
 
 export class BitcoinHistoryData {
+  @ApiProperty({ type: [BitcoinHistoryPoint] })
   data: BitcoinHistoryPoint[];
 }
 
