@@ -27,10 +27,10 @@ export class LoggerConfig {
       logFormat === 'json'
         ? format.json()
         : format.printf(
-          ({ timestamp, level, message, context, trace, stack }) => {
-            return `${timestamp} [${level}] [${context || 'Application'}] ${message} ${stack || trace || ''}`;
-          },
-        ),
+            ({ timestamp, level, message, context, trace, stack }) => {
+              return `${timestamp} [${level}] [${context || 'Application'}] ${message} ${stack || trace || ''}`;
+            },
+          ),
     );
 
     const consoleFormat = format.combine(
@@ -52,20 +52,20 @@ export class LoggerConfig {
         // Add file transport in production
         ...(nodeEnv === 'production'
           ? [
-            new transports.File({
-              filename: 'logs/error.log',
-              level: 'error',
-              maxsize: 10485760, // 10MB
-              maxFiles: 5,
-              format: baseFormat,
-            }),
-            new transports.File({
-              filename: 'logs/combined.log',
-              maxsize: 10485760, // 10MB
-              maxFiles: 5,
-              format: baseFormat,
-            }),
-          ]
+              new transports.File({
+                filename: 'logs/error.log',
+                level: 'error',
+                maxsize: 10485760, // 10MB
+                maxFiles: 5,
+                format: baseFormat,
+              }),
+              new transports.File({
+                filename: 'logs/combined.log',
+                maxsize: 10485760, // 10MB
+                maxFiles: 5,
+                format: baseFormat,
+              }),
+            ]
           : []),
       ],
       exitOnError: false,

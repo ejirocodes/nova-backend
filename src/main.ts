@@ -4,35 +4,43 @@ import { AppConfig, AppLoggerService } from './config';
 import { ValidationPipe } from '@nestjs/common';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    bufferLogs: true,
-  });
+  try {
+    const app = await NestFactory.create(AppModule, {
+      bufferLogs: true,
+    });
 
-  const appConfig = app.get(AppConfig);
-  app.useGlobalPipes(new ValidationPipe());
+    const appConfig = app.get(AppConfig);
+    app.useGlobalPipes(new ValidationPipe());
 
-  const logger = app.get(AppLoggerService);
+    const logger = app.get(AppLoggerService);
 
-  app.enableCors({
-    origin: ['http://localhost:5253'],
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-  });
+    app.enableCors({
+      origin: ['http://localhost:5253'],
+      methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+      allowedHeaders: ['Content-Type', 'Authorization'],
+    });
 
-  app.useLogger(logger);
-  app.setGlobalPrefix('api/v1');
+    app.useLogger(logger);
+    app.setGlobalPrefix('api/v1');
 
-  const { port, host, nodeEnv } = appConfig;
+    const { port, host, nodeEnv } = appConfig;
 
-  await app.listen(port, host, () => {
     logger.log(
-      `Server is running in ${nodeEnv} mode on http://${host}:${port}`,
+      `AWS Configuration - Region: ${appConfig.awsRegion}, Has AccessKeyId: ${!!appConfig.awsAccessKeyId}, Has SecretAccessKey: ${!!appConfig.awsSecretAccessKey}`,
       'Bootstrap',
     );
-    logger.log(`Application started successfully`, 'Bootstrap');
-  });
+
+    await app.listen(port, host, () => {
+      logger.log(
+        `Server is running in ${nodeEnv} mode on http://${host}:${port}`,
+        'Bootstrap',
+      );
+      logger.log(`Application started successfully`, 'Bootstrap');
+    });
+  } catch (err) {
+    console.error(`Error starting server:`, err);
+    process.exit(1);
+  }
 }
-bootstrap().catch((err) => {
-  console.error(`Error starting server: ${err}`);
-  process.exit(1);
-});
+
+bootstrap();

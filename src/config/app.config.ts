@@ -27,4 +27,13 @@ export class AppConfig {
     default: 'development',
   })
   nodeEnv: string;
+
+  @Value('AWS_REGION')
+  awsRegion: string;
+
+  @Value('AWS_ACCESS_KEY_ID')
+  awsAccessKeyId: string;
+
+  @Value('AWS_SECRET_ACCESS_KEY')
+  awsSecretAccessKey: string;
 }

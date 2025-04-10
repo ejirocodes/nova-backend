@@ -13,7 +13,6 @@ Response 200:
   "userId": "user_123",
   "score": 4,
   "guessesMade": 10,
-  "guessesWon": 3,
   "guessesLost": 7,
   "guessesPending": 0,
   "email": "ejiro.asiuwhu@gmail.com",

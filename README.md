@@ -97,3 +97,73 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 ## License
 
 Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+
+## DynamoDB Local Setup
+
+This project uses Amazon DynamoDB for data storage. For local development, you can use DynamoDB Local running in a Docker container.
+
+### Prerequisites
+
+- Docker and Docker Compose installed on your machine
+
+### Running DynamoDB Local
+
+1. Start the DynamoDB Local container:
+
+```bash
+cd nova-backend
+docker-compose up -d
+# or
+pnpm db:local:up
+```
+
+2. Use the `.env.local` file for local development:
+
+```bash
+cp .env.local .env
+```
+
+3. DynamoDB Local will be available at `http://localhost:8000`
+
+4. You can verify if DynamoDB Local is running:
+
+```bash
+aws dynamodb list-tables --endpoint-url http://localhost:8000
+```
+
+### Running DynamoDB Local with the Application
+
+To start both the DynamoDB Local container and your application with a single command:
+
+```bash
+# Start DynamoDB and then the app (sequential)
+pnpm dev
+
+# Start DynamoDB and the app concurrently
+pnpm dev:full
+```
+
+### Running Everything with Docker Compose
+
+You can also run both the DynamoDB Local and the NestJS application together using Docker Compose:
+
+```bash
+# Start both services (app + DynamoDB)
+pnpm docker:dev
+
+# Start both services and rebuild containers
+pnpm docker:dev:build
+```
+
+This will:
+
+- Start the DynamoDB Local container
+- Build and start the NestJS application container
+- Connect the app to DynamoDB automatically
+- Make the app available at http://localhost:3024
+
+The docker-compose setup uses environment variables from your `.env` file, so make sure you have all the necessary variables defined there. You don't need to manually copy `.env.local` to `.env` when using Docker Compose, as all the environment variables are sourced directly from your `.env` file.
+
+> **Important**: When running the app in Docker, make sure your `.env` file has `HOST=0.0.0.0` (not localhost). This ensures the app is accessible from outside the container.
+
+Note: For local development, the application automatically connects to the local DynamoDB instance when `NODE_ENV=development`.
