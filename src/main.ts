@@ -16,7 +16,7 @@ async function bootstrap() {
     const logger = app.get(AppLoggerService);
 
     app.enableCors({
-      origin: ['http://localhost:5253'],
+      origin: ['http://localhost:5255'],
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization'],
     });

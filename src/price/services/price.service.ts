@@ -12,6 +12,7 @@ import {
 import { firstValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
 import { AppConfig } from '../../config/app.config';
+import { BitcoinPricePeriod } from '../dtos/bitcoin-price.dto';
 @Injectable()
 export class PriceService {
   private readonly logger = new Logger(PriceService.name);
@@ -24,7 +25,9 @@ export class PriceService {
     this.apiBaseUrl = this.appConfig.cryptocurrencyApiUrl;
   }
 
-  async getBitcoinPrice(period: string = '7d'): Promise<BitcoinPriceResponse> {
+  async getBitcoinPrice(
+    period: BitcoinPricePeriod = BitcoinPricePeriod['7d'],
+  ): Promise<BitcoinPriceResponse> {
     try {
       const currentPriceUrl = `${this.apiBaseUrl}/coins/${ASSETS.BITCOIN.ID}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
       const currentPriceResponse = await firstValueFrom(
