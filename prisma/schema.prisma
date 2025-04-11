@@ -30,6 +30,7 @@ model User {
 
   @@index([clerk_id])
   @@index([email])
+  @@map("users")
 }
 
 model Guess {
@@ -48,6 +49,7 @@ model Guess {
 
   @@index([userId])
   @@index([isActive])
+  @@map("guesses")
 }
 
 model Price {
@@ -57,6 +59,7 @@ model Price {
   timestamp DateTime @default(now())
 
   @@index([timestamp])
+  @@map("prices")
 }
 
 enum Direction {
