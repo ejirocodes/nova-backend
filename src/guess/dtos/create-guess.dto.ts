@@ -46,3 +46,41 @@ export class GuessResponseDto {
   })
   createdAt: string;
 }
+
+export class UserGuessStatsResponseDto {
+  @ApiProperty({
+    type: Number,
+    description: 'The score of the user',
+  })
+  score: number;
+
+  @ApiProperty({
+    type: Number,
+    description: 'The number of guesses made by the user',
+  })
+  guessesMade: number;
+
+  @ApiProperty({
+    type: Number,
+    description: 'The number of guesses lost by the user',
+  })
+  guessesLost: number;
+
+  @ApiProperty({
+    type: Number,
+    description: 'The number of guesses pending by the user',
+  })
+  guessesPending: number;
+
+  @ApiProperty({
+    type: Number,
+    description: 'The active guess of the user',
+  })
+  activeGuess: number;
+
+  @ApiProperty({
+    type: Number,
+    description: 'The ID of the user',
+  })
+  id: string;
+}

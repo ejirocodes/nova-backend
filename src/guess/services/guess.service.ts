@@ -1,5 +1,8 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { CreateGuessDto } from '../dtos/create-guess.dto';
+import {
+  CreateGuessDto,
+  UserGuessStatsResponseDto,
+} from '../dtos/create-guess.dto';
 import { generateUniqueId } from 'src/helpers/uuid.generator';
 import { PriceService } from 'src/price/services/price.service';
 import { PrismaService } from 'src/config/db/prisma.service';
@@ -129,22 +132,23 @@ export class GuessService {
     });
   }
 
-  async getUserGuessStats(userId: string) {
+  async getUserGuessStats(userId: string): Promise<UserGuessStatsResponseDto> {
     const user = await this.prisma.user.findUnique({
-      where: { id: userId },
+      where: { clerk_id: userId },
       select: {
         score: true,
         guessesMade: true,
         guessesLost: true,
         guessesPending: true,
+        id: true,
       },
     });
 
-    const activeGuess = await this.getUserActiveGuess(userId);
+    const activeGuess = await this.getUserActiveGuess(user.id);
 
     return {
       ...user,
-      activeGuess,
+      activeGuess: activeGuess ? 1 : 0,
     };
   }
 }

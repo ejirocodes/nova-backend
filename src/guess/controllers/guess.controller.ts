@@ -2,7 +2,11 @@ import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GuessService } from '../services/guess.service';
 import { ResolutionService } from '../services/resolution.service';
-import { CreateGuessDto, GuessResponseDto } from '../dtos/create-guess.dto';
+import {
+  CreateGuessDto,
+  GuessResponseDto,
+  UserGuessStatsResponseDto,
+} from '../dtos/create-guess.dto';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { UserId } from 'src/auth/decorators/user.decorator';
 
@@ -41,7 +45,10 @@ export class GuessController {
 
   @Get('stats')
   @ApiOperation({ summary: 'Get user guess statistics' })
-  async getUserGuessStats(@UserId() userId: string) {
+  @ApiResponse({ type: UserGuessStatsResponseDto })
+  async getUserGuessStats(
+    @UserId() userId: string,
+  ): Promise<UserGuessStatsResponseDto> {
     return await this.guessService.getUserGuessStats(userId);
   }
 

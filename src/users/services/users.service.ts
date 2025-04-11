@@ -11,4 +11,10 @@ export class UsersService {
       data: userData,
     });
   }
+
+  async getUserByClerkId(clerkId: string) {
+    return await this.prisma.user.findUnique({
+      where: { clerk_id: clerkId },
+    });
+  }
 }
