@@ -2,8 +2,8 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import { CreateGuessDto } from '../dtos/create-guess.dto';
 import { generateUniqueId } from 'src/helpers/uuid.generator';
 import { PriceService } from 'src/price/services/price.service';
+import { PrismaService } from 'src/config/db/prisma.service';
 import { Guess, Result } from '@prisma/client';
-import { PrismaService } from '../../config/db/ prisma.service';
 
 @Injectable()
 export class GuessService {
@@ -13,6 +13,14 @@ export class GuessService {
   ) {}
 
   async createGuess(guess: CreateGuessDto, userId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { clerk_id: userId },
+    });
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
     const activeGuess = await this.prisma.guess.findFirst({
       where: {
         userId,
@@ -27,7 +35,7 @@ export class GuessService {
 
     const startPrice = await this.priceService.getLatestBitcoinPrice();
     const payload: Guess = {
-      userId,
+      userId: user.id,
       direction: guess.direction,
       startPrice,
       resolved: false,

@@ -5,7 +5,7 @@ import { GuessController } from './controllers/guess.controller';
 import { GuessService } from './services/guess.service';
 import { ResolutionService } from './services/resolution.service';
 import { PriceModule } from '../price/price.module';
-import { PrismaService } from '../config/db/ prisma.service';
+import { PrismaService } from '../config/db/prisma.service';
 import { AuthModule } from '../auth/auth.module';
 import { ConfigModule } from '@nestjs/config';
 

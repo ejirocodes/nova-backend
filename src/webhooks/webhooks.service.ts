@@ -1,10 +1,12 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { PrismaClient } from '@prisma/client';
+import { PrismaService } from '../config/db/prisma.service';
+import { generateUniqueId } from 'src/helpers/uuid.generator';
+
 @Injectable()
 export class WebhooksService {
   private readonly logger = new Logger(WebhooksService.name);
 
-  constructor(private readonly prismaClient: PrismaClient) {}
+  constructor(private readonly prismaService: PrismaService) {}
 
   async handleClerkUserCreated(userData: any): Promise<void> {
     try {
@@ -23,7 +25,7 @@ export class WebhooksService {
       const primaryEmail = email_addresses?.find(
         (email: any) => email.id === userData.data.primary_email_address_id,
       )?.email_address;
-      const existingUser = await this.prismaClient.user.findUnique({
+      const existingUser = await this.prismaService.user.findUnique({
         where: {
           clerk_id: clerkId,
         },
@@ -34,9 +36,10 @@ export class WebhooksService {
         );
         return;
       }
-      await this.prismaClient.user.create({
+      await this.prismaService.user.create({
         data: {
-          user_id: clerkId,
+          id: generateUniqueId('user'),
+          clerk_id: clerkId,
           email: primaryEmail,
           name: `${first_name} ${last_name}`,
           createdAt: new Date(created_at),
@@ -73,7 +76,7 @@ export class WebhooksService {
       const primaryEmail = email_addresses?.find(
         (email: any) => email.id === userData.data.primary_email_address_id,
       )?.email_address;
-      const existingUser = await this.prismaClient.user.findUnique({
+      const existingUser = await this.prismaService.user.findUnique({
         where: {
           clerk_id: clerkId,
         },
@@ -84,7 +87,7 @@ export class WebhooksService {
         );
         return;
       }
-      await this.prismaClient.user.update({
+      await this.prismaService.user.update({
         where: {
           clerk_id: clerkId,
         },

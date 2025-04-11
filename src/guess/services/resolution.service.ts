@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { GuessService } from './guess.service';
-import { PrismaService } from '../../config/db/ prisma.service';
+import { PrismaService } from '../../config/db/prisma.service';
 import { Interval } from '@nestjs/schedule';
 
 @Injectable()

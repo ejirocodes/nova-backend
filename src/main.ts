@@ -45,11 +45,6 @@ async function bootstrap() {
 
     const { port, host, nodeEnv } = appConfig;
 
-    logger.log(
-      `AWS Configuration - Region: ${appConfig.awsRegion}, Has AccessKeyId: ${!!appConfig.awsAccessKeyId}, Has SecretAccessKey: ${!!appConfig.awsSecretAccessKey}`,
-      'Bootstrap',
-    );
-
     await app.listen(port, host, () => {
       logger.log(
         `Server is running in ${nodeEnv} mode on http://${host}:${port}`,

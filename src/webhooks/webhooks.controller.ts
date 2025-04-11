@@ -39,6 +39,7 @@ export class WebhooksController {
 
       switch (type) {
         case 'user.created':
+          console.log('user.created', payload);
           this.logger.log(`Processing user.created: ${payload}`);
           await this.webhooksService.handleClerkUserCreated(payload);
           break;
