@@ -25,8 +25,15 @@ export class GuessController {
   async createGuess(
     @Body() body: CreateGuessDto,
     @UserId() clerkUserId: string,
-  ) {
+  ): Promise<GuessResponseDto> {
     return await this.guessService.createGuess(body, clerkUserId);
+  }
+
+  @Get('status/:id')
+  @ApiOperation({ summary: 'Get guess status' })
+  @ApiResponse({ type: GuessResponseDto })
+  async getGuessStatus(@Param('id') id: string): Promise<GuessResponseDto> {
+    return await this.guessService.guessStatus(id);
   }
 
   @Put(':id/resolve')
@@ -49,6 +56,7 @@ export class GuessController {
   async getUserGuessStats(
     @UserId() userId: string,
   ): Promise<UserGuessStatsResponseDto> {
+    console.log('getUserGuessStats', userId);
     return await this.guessService.getUserGuessStats(userId);
   }
 

@@ -1,6 +1,7 @@
 import { BadRequestException, Injectable } from '@nestjs/common';
 import {
   CreateGuessDto,
+  GuessResponseDto,
   UserGuessStatsResponseDto,
 } from '../dtos/create-guess.dto';
 import { generateUniqueId } from 'src/helpers/uuid.generator';
@@ -15,7 +16,10 @@ export class GuessService {
     private readonly priceService: PriceService,
   ) {}
 
-  async createGuess(guess: CreateGuessDto, userId: string) {
+  async createGuess(
+    guess: CreateGuessDto,
+    userId: string,
+  ): Promise<GuessResponseDto> {
     const user = await this.prisma.user.findUnique({
       where: { clerk_id: userId },
     });
@@ -24,16 +28,16 @@ export class GuessService {
       throw new BadRequestException('User not found');
     }
 
-    const activeGuess = await this.prisma.guess.findFirst({
+    const activeGuess = await this.prisma.guess.findMany({
       where: {
-        userId,
+        userId: user.id,
         isActive: true,
         resolved: false,
       },
     });
 
-    if (activeGuess) {
-      throw new BadRequestException('User already has an active guess');
+    if (activeGuess.length > 0) {
+      return activeGuess[0] as unknown as GuessResponseDto;
     }
 
     const startPrice = await this.priceService.getLatestBitcoinPrice();
@@ -50,9 +54,10 @@ export class GuessService {
       createdAt: new Date(),
       updatedAt: new Date(),
     };
-    return await this.prisma.guess.create({
+
+    return (await this.prisma.guess.create({
       data: payload,
-    });
+    })) as unknown as GuessResponseDto;
   }
 
   async resolveGuess(guessId: string) {
@@ -99,6 +104,14 @@ export class GuessService {
     return updatedGuess;
   }
 
+  async guessStatus(guessId: string): Promise<GuessResponseDto> {
+    const guess = await this.prisma.guess.findUnique({
+      where: { id: guessId },
+    });
+
+    return guess as unknown as GuessResponseDto;
+  }
+
   private async updateUserScore(userId: string, result: Result) {
     const user = await this.prisma.user.findUnique({
       where: { id: userId },
@@ -123,13 +136,15 @@ export class GuessService {
   }
 
   async getUserActiveGuess(userId: string) {
-    return await this.prisma.guess.findFirst({
+    const activeGuess = await this.prisma.guess.findMany({
       where: {
         userId,
         isActive: true,
         resolved: false,
       },
     });
+
+    return activeGuess;
   }
 
   async getUserGuessStats(userId: string): Promise<UserGuessStatsResponseDto> {
@@ -144,11 +159,18 @@ export class GuessService {
       },
     });
 
+    console.log({ user });
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
     const activeGuess = await this.getUserActiveGuess(user.id);
+
+    console.log({ activeGuess });
 
     return {
       ...user,
-      activeGuess: activeGuess ? 1 : 0,
+      activeGuess: activeGuess.length,
     };
   }
 }

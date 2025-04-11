@@ -26,7 +26,7 @@ export class GuessResponseDto {
     type: String,
     description: 'The ID of the guess',
   })
-  guessId: string;
+  id: string;
 
   @ApiProperty({
     type: String,
@@ -45,6 +45,48 @@ export class GuessResponseDto {
     description: 'The created at date of the guess',
   })
   createdAt: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The guessed at date of the guess',
+  })
+  guessedAt: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The updated at date of the guess',
+  })
+  updatedAt: string;
+
+  @ApiProperty({
+    type: String,
+    description: 'The user id of the guess',
+  })
+  userId: string;
+
+  @ApiProperty({
+    type: Boolean,
+    description: 'Whether the guess is active',
+  })
+  isActive: boolean;
+
+  @ApiProperty({
+    type: Boolean,
+    description: 'Whether the guess is resolved',
+  })
+  resolved: boolean;
+
+  @ApiProperty({
+    type: String,
+    description: 'The end price of the guess',
+  })
+  endPrice: number;
+
+  @ApiProperty({
+    type: String,
+    description: 'The result of the guess',
+  })
+  result: string;
 }
 
 export class UserGuessStatsResponseDto {
