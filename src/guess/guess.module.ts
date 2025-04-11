@@ -1,26 +1,14 @@
 import { Module } from '@nestjs/common';
-import { DynamooseModule } from 'nestjs-dynamoose';
-import { GuessSchema } from './schemas/guess.schema';
-import { GuessModel } from './models/guess.model';
+
 import { GuessController } from './controllers/guess.controller';
 import { GuessService } from './services/guess.service';
 import { PriceModule } from '../price/price.module';
+import { PrismaService } from '../config/db/ prisma.service';
 
 @Module({
-  imports: [
-    PriceModule,
-    DynamooseModule.forFeature([
-      {
-        name: 'Guess',
-        schema: GuessSchema,
-        options: {
-          tableName: 'guesses',
-        },
-      },
-    ]),
-  ],
+  imports: [PriceModule],
   controllers: [GuessController],
-  providers: [GuessService, GuessModel],
-  exports: [GuessService, GuessModel],
+  providers: [GuessService, PrismaService],
+  exports: [GuessService],
 })
 export class GuessModule {}

@@ -11,7 +11,7 @@ export class GuessController {
   @Post()
   @ApiOperation({ summary: 'Create a guess' })
   @ApiResponse({ type: GuessResponseDto })
-  async createGuess(@Body() body: CreateGuessDto): Promise<GuessResponseDto> {
+  async createGuess(@Body() body: CreateGuessDto) {
     return await this.guessService.createGuess(body);
   }
 }
