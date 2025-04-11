@@ -40,14 +40,19 @@ export class GuessModel {
   }
 
   async findByUserId(userId: string): Promise<Guess[]> {
-    const result = await this.model.scan('userId').eq(userId).exec();
+    const result = await this.model
+      .query('userId')
+      .eq(userId)
+      .using('userId-index')
+      .exec();
     return result;
   }
 
   async findActiveByUserId(userId: string): Promise<Guess | null> {
     const result = await this.model
-      .scan('userId')
+      .query('userId')
       .eq(userId)
+      .using('userId-index')
       .where('resolved')
       .eq(false)
       .exec();

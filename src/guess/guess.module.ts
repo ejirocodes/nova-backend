@@ -4,9 +4,11 @@ import { GuessSchema } from './schemas/guess.schema';
 import { GuessModel } from './models/guess.model';
 import { GuessController } from './controllers/guess.controller';
 import { GuessService } from './services/guess.service';
+import { PriceModule } from '../price/price.module';
 
 @Module({
   imports: [
+    PriceModule,
     DynamooseModule.forFeature([
       {
         name: 'Guess',

@@ -80,4 +80,13 @@ export class PriceService {
       );
     }
   }
+
+  async getLatestBitcoinPrice(): Promise<number> {
+    const currentPriceUrl = `${this.apiBaseUrl}/coins/${ASSETS.BITCOIN.ID}?localization=false&tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`;
+    const currentPriceResponse = await firstValueFrom(
+      this.httpService.get(currentPriceUrl),
+    );
+
+    return currentPriceResponse.data.market_data.current_price.usd;
+  }
 }

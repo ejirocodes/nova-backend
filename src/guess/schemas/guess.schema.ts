@@ -11,7 +11,7 @@ export const GuessSchema = new Schema(
       required: true,
       index: {
         name: 'userId-index',
-        type: 'local',
+        type: 'global',
       },
     },
     direction: {

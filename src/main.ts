@@ -11,6 +11,7 @@ async function bootstrap() {
     });
 
     const appConfig = app.get(AppConfig);
+
     app.useGlobalPipes(
       new ValidationPipe({
         transform: true,
