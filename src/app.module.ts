@@ -7,6 +7,7 @@ import { DynamooseModule } from 'nestjs-dynamoose';
 import { UsersModule } from './users/users.module';
 import { PriceModule } from './price/price.module';
 import { GuessModule } from './guess/guess.module';
+import { PrismaService } from './config/db/ prisma.service';
 
 @Module({
   imports: [
@@ -36,6 +37,6 @@ import { GuessModule } from './guess/guess.module';
     LoggerModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, PrismaService],
 })
 export class AppModule {}
