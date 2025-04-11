@@ -26,31 +26,13 @@ export class WebhooksController {
 
   @Post('clerk')
   @UseGuards(ClerkWebhookGuard)
-  async handleClerkWebhook(
-    // @Headers('svix-id') svixId: string,
-    // @Headers('svix-timestamp') svixTimestamp: string,
-    // @Headers('svix-signature') svixSignature: string,
-    @Body() payload: any,
-  ) {
+  async handleClerkWebhook(@Body() payload: any) {
     try {
       if (!this.clerkWebhookSecret) {
         throw new BadRequestException(
           'Error: Please add SIGNING_SECRET from Clerk Dashboard to .env',
         );
       }
-
-      // if (this.clerkWebhookSecret) {
-      // this.verifyClerkWebhookSignature(
-      //   svixId,
-      //   svixTimestamp,
-      //   svixSignature,
-      //   JSON.stringify(payload),
-      // );
-      // } else {
-      // this.logger.warn(
-      //   'CLERK_SIGNING_SECRET not set, skipping signature verification',
-      // );
-      // }
 
       const { type } = payload;
       this.logger.log(`Received Clerk webhook: ${type}`);
@@ -77,31 +59,4 @@ export class WebhooksController {
       throw error;
     }
   }
-
-  // private verifyClerkWebhookSignature(
-  //   svixId: string,
-  //   svixTimestamp: string,
-  //   svixSignature: string,
-  //   payload: string,
-  // ): void {
-  //   if (!svixId || !svixTimestamp || !svixSignature) {
-  //     throw new Error('Missing Svix headers');
-  //   }
-
-  //   const signedContent = `${svixId}.${svixTimestamp}.${payload}`;
-  //   const signature = crypto
-  //     .createHmac('sha256', this.clerkWebhookSecret)
-  //     .update(signedContent)
-  //     .digest('hex');
-
-  //   const expectedSignature = `v1,${signature}`;
-  //   const providedSignatures = svixSignature.split(' ');
-
-  //   console.log('expectedSignature', expectedSignature);
-  //   console.log('providedSignatures', providedSignatures);
-
-  //   if (!providedSignatures.includes(expectedSignature)) {
-  //     throw new Error('Invalid webhook signature');
-  //   }
-  // }
 }

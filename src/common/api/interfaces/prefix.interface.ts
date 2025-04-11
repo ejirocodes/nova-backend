@@ -23,6 +23,7 @@ export const prefixes = {
   ratelimit: 'rl',
   error: 'err',
   user: 'usr',
+  guess: 'gus',
 } as const;
 
 export type PrefixType = keyof typeof prefixes;
