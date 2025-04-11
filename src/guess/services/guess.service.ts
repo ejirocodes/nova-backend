@@ -97,6 +97,11 @@ export class GuessService {
   }
 
   private async updateUserScore(userId: string, result: Result) {
+    const user = await this.prisma.user.findUnique({
+      where: { id: userId },
+      select: { guessesPending: true },
+    });
+
     await this.prisma.user.update({
       where: { id: userId },
       data: {
@@ -105,7 +110,10 @@ export class GuessService {
         },
         guessesMade: { increment: 1 },
         guessesLost: result === Result.incorrect ? { increment: 1 } : undefined,
-        guessesPending: { decrement: 1 },
+        guessesPending:
+          user?.guessesPending && user.guessesPending > 0
+            ? { decrement: 1 }
+            : undefined,
         activeGuess: null,
       },
     });
