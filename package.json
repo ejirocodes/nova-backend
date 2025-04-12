@@ -20,8 +20,8 @@
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "db:local:up": "docker-compose up -d",
     "db:local:down": "docker-compose down",
-    "dev": "pnpm db:local:up && pnpm start:dev",
-    "dev:full": "concurrently \"pnpm db:local:up\" \"pnpm start:dev\"",
+    "dev": "npm run db:local:up && npm run start:dev",
+    "dev:full": "concurrently \"npm run db:local:up\" \"npm run start:dev\"",
     "docker:dev": "docker-compose up",
     "docker:down": "docker-compose down",
     "docker:dev:build": "docker-compose up --build"

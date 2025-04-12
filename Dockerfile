@@ -1,26 +1,17 @@
-FROM node:20-alpine AS base
-
+FROM node:20-alpine
 WORKDIR /code
 
 ARG DATABASE_URL
 
-COPY package.json pnpm-lock.yaml ./
-
-RUN npm install -g pnpm
-RUN pnpm setup
-RUN pnpm i -g @nestjs/cli
-RUN pnpm i --save-dev @types/node
-
-RUN pnpm install --frozen-lockfile
+COPY package*.json ./
+RUN npm i -g husky
+RUN npm i -g @nestjs/cli
+RUN npm i --save-dev @types/node
 
 COPY prisma ./prisma
-
-RUN pnpm prisma generate
+RUN npm run prisma:generate
 
 COPY . .
-
-RUN pnpm build
-
+RUN npm run build
 EXPOSE 3001
-
-CMD ["pnpm", "start:prod"]
+CMD ["npm", "run", "start:prod"]
