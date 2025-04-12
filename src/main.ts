@@ -25,7 +25,7 @@ async function bootstrap() {
     const logger = app.get(AppLoggerService);
 
     app.enableCors({
-      origin: ['http://localhost:5255'],
+      origin: ['http://localhost:5255', 'https://thenova.vercel.app'],
       methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       allowedHeaders: ['Content-Type', 'Authorization'],
     });
