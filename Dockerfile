@@ -1,10 +1,14 @@
 FROM node:20-alpine AS base
 
-WORKDIR /app
+WORKDIR /code
 
-RUN npm install -g pnpm
+ARG DATABASE_URL
 
 COPY package.json pnpm-lock.yaml ./
+
+RUN npm install -g pnpm
+RUN pnpm i -g @nestjs/cli
+RUN pnpm i --save-dev @types/node
 
 RUN pnpm install --frozen-lockfile
 
