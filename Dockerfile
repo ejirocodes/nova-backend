@@ -7,6 +7,7 @@ ARG DATABASE_URL
 COPY package.json pnpm-lock.yaml ./
 
 RUN npm install -g pnpm
+RUN pnpm setup
 RUN pnpm i -g @nestjs/cli
 RUN pnpm i --save-dev @types/node
 
@@ -22,4 +23,4 @@ RUN pnpm build
 
 EXPOSE 3001
 
-CMD ["pnpm", "start:prod"] 
+CMD ["pnpm", "start:prod"]
