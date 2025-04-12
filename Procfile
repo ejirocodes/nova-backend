@@ -1,1 +1,1 @@
-web: node dist/main
+web: pnpm run build && pnpm run start
