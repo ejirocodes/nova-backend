@@ -17,4 +17,4 @@ services:
       - HOST=${HOST}
       - LOG_LEVEL=${LOG_LEVEL}
       - LOG_FORMAT=${LOG_FORMAT}
-    command: pnpm start:dev
+    command: npm run start:dev

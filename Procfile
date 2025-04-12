@@ -1,1 +1,1 @@
-web: pnpm run build && pnpm run start
+web: npm run build && npm run start
