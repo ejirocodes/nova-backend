@@ -8,6 +8,8 @@ COPY package.json pnpm-lock.yaml ./
 
 RUN pnpm install --frozen-lockfile
 
+RUN pnpm prisma generate
+
 COPY . .
 
 RUN pnpm build
