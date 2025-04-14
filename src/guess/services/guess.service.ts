@@ -69,9 +69,12 @@ export class GuessService {
       return null;
     }
 
-    const now = new Date();
-    const guessTime = new Date(guess.guessedAt);
-    const timeDifference = now.getTime() - guessTime.getTime();
+    const now = Date.now();
+    const guessTime =
+      guess.guessedAt instanceof Date
+        ? guess.guessedAt.getTime()
+        : new Date(guess.guessedAt).getTime();
+    const timeDifference = now - guessTime;
 
     if (timeDifference < 60000) {
       return null;
@@ -159,14 +162,11 @@ export class GuessService {
       },
     });
 
-    console.log({ user });
-    // if (!user) {
-    //   throw new BadRequestException('User not found');
-    // }
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
 
     const activeGuess = await this.getUserActiveGuess(user.id);
-
-    console.log({ activeGuess });
 
     return {
       ...user,
@@ -179,9 +179,9 @@ export class GuessService {
       where: { clerk_id: clerkUserId },
     });
 
-    // if (!user) {
-    //   throw new BadRequestException('User not found');
-    // }
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
 
     return user;
   }
