@@ -5,7 +5,7 @@ import {
 import { v7 as uuidv7 } from 'uuid';
 
 /**
- * Generates a new prefixed identifier using UUID v4
+ * Generates a new prefixed identifier using UUID v7
  * @param prefix The prefix to use for the identifier
  * @returns A string in the format ⁠ prefix_uuid ⁠
  */
