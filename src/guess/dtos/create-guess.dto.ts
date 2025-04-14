@@ -77,7 +77,7 @@ export class GuessResponseDto {
   resolved: boolean;
 
   @ApiProperty({
-    type: String,
+    type: Number,
     description: 'The end price of the guess',
   })
   endPrice: number;
