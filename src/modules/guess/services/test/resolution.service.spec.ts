@@ -33,10 +33,23 @@ describe('ResolutionService', () => {
     }),
   };
 
+  const txMock = {
+    guess: {
+      findMany: jest.fn().mockResolvedValue([mockGuess]),
+      findUnique: jest.fn().mockImplementation(({ where }) => {
+        if (where.id === mockGuess.id) {
+          return Promise.resolve({ resolved: false });
+        }
+        return Promise.resolve(null);
+      }),
+    },
+  };
+
   const mockPrismaService = {
     guess: {
       findMany: jest.fn().mockResolvedValue([mockGuess]),
     },
+    $transaction: jest.fn().mockImplementation((callback) => callback(txMock)),
   };
 
   beforeEach(async () => {
@@ -74,7 +87,8 @@ describe('ResolutionService', () => {
     it('should resolve pending guesses older than 1 minute', async () => {
       await service.resolveGuesses();
 
-      expect(prismaService.guess.findMany).toHaveBeenCalledWith({
+      expect(prismaService.$transaction).toHaveBeenCalled();
+      expect(txMock.guess.findMany).toHaveBeenCalledWith({
         where: {
           isActive: true,
           resolved: false,
@@ -90,11 +104,12 @@ describe('ResolutionService', () => {
     });
 
     it('should handle empty list of guesses to resolve', async () => {
-      mockPrismaService.guess.findMany.mockResolvedValueOnce([]);
+      txMock.guess.findMany.mockResolvedValueOnce([]);
 
       await service.resolveGuesses();
 
-      expect(prismaService.guess.findMany).toHaveBeenCalled();
+      expect(prismaService.$transaction).toHaveBeenCalled();
+      expect(txMock.guess.findMany).toHaveBeenCalled();
       expect(guessService.resolveGuess).not.toHaveBeenCalled();
     });
 
@@ -105,11 +120,19 @@ describe('ResolutionService', () => {
         { ...mockGuess, id: 'guess_789' },
       ];
 
-      mockPrismaService.guess.findMany.mockResolvedValueOnce(mockGuesses);
+      txMock.guess.findUnique.mockImplementation(({ where }) => {
+        if (['guess_123', 'guess_456', 'guess_789'].includes(where.id)) {
+          return Promise.resolve({ resolved: false });
+        }
+        return Promise.resolve(null);
+      });
+
+      txMock.guess.findMany.mockResolvedValueOnce(mockGuesses);
 
       await service.resolveGuesses();
 
-      expect(prismaService.guess.findMany).toHaveBeenCalled();
+      expect(prismaService.$transaction).toHaveBeenCalled();
+      expect(txMock.guess.findMany).toHaveBeenCalled();
       expect(guessService.resolveGuess).toHaveBeenCalledTimes(3);
       expect(guessService.resolveGuess).toHaveBeenCalledWith('guess_123');
       expect(guessService.resolveGuess).toHaveBeenCalledWith('guess_456');
@@ -118,11 +141,11 @@ describe('ResolutionService', () => {
 
     it('should handle errors during resolution', async () => {
       const error = new Error('Resolution failed');
-      mockPrismaService.guess.findMany.mockRejectedValueOnce(error);
+      prismaService.$transaction = jest.fn().mockRejectedValue(error);
 
       await service.resolveGuesses();
 
-      expect(prismaService.guess.findMany).toHaveBeenCalled();
+      expect(prismaService.$transaction).toHaveBeenCalled();
       expect(guessService.resolveGuess).not.toHaveBeenCalled();
     });
   });

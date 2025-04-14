@@ -20,27 +20,38 @@ export class ResolutionService {
     try {
       const oneMinuteAgo = new Date(Date.now() - 60000);
 
-      const guessesToResolve = await this.prisma.guess.findMany({
-        where: {
-          isActive: true,
-          resolved: false,
-          guessedAt: {
-            lte: oneMinuteAgo,
+      await this.prisma.$transaction(async (tx) => {
+        const guessesToResolve = await tx.guess.findMany({
+          where: {
+            isActive: true,
+            resolved: false,
+            guessedAt: {
+              lte: oneMinuteAgo,
+            },
           },
-        },
-        take: 20,
+          take: 20,
+        });
+
+        if (guessesToResolve.length === 0) {
+          return;
+        }
+
+        this.logger.log(`Found ${guessesToResolve.length} guesses to resolve`);
+
+        for (const guess of guessesToResolve) {
+          const currentGuess = await tx.guess.findUnique({
+            where: { id: guess.id },
+            select: { resolved: true },
+          });
+
+          if (currentGuess && !currentGuess.resolved) {
+            await this.guessService.resolveGuess(guess.id);
+            this.logger.log(`Resolved guess -> ${guess.id}`);
+          } else {
+            this.logger.log(`Skipping already resolved guess -> ${guess.id}`);
+          }
+        }
       });
-
-      if (guessesToResolve.length === 0) {
-        return;
-      }
-
-      this.logger.log(`Found ${guessesToResolve.length} guesses to resolve`);
-
-      for (const guess of guessesToResolve) {
-        await this.guessService.resolveGuess(guess.id);
-        this.logger.log(`Resolved guess -> ${guess.id}`);
-      }
     } catch (error) {
       this.logger.error(
         `Failed to resolve guesses -> ${error.message}`,

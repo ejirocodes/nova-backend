@@ -61,50 +61,52 @@ export class GuessService {
   }
 
   async resolveGuess(guessId: string) {
-    const guess = await this.prisma.guess.findUnique({
-      where: { id: guessId },
+    return await this.prisma.$transaction(async (tx) => {
+      const guess = await tx.guess.findUnique({
+        where: { id: guessId },
+      });
+
+      if (!guess || guess.resolved) {
+        return null;
+      }
+
+      const now = Date.now();
+      const guessTime =
+        guess.guessedAt instanceof Date
+          ? guess.guessedAt.getTime()
+          : new Date(guess.guessedAt).getTime();
+      const timeDifference = now - guessTime;
+
+      if (timeDifference < 60000) {
+        return null;
+      }
+
+      const currentPrice = await this.priceService.getLatestBitcoinPrice();
+
+      let result: Result;
+      if (
+        (guess.direction === 'up' && currentPrice > guess.startPrice) ||
+        (guess.direction === 'down' && currentPrice < guess.startPrice)
+      ) {
+        result = Result.correct;
+      } else {
+        result = Result.incorrect;
+      }
+
+      const updatedGuess = await tx.guess.update({
+        where: { id: guessId },
+        data: {
+          resolved: true,
+          isActive: false,
+          endPrice: currentPrice,
+          result,
+        },
+      });
+
+      await this.updateUserScore(guess.userId, result, tx);
+
+      return updatedGuess;
     });
-
-    if (!guess || guess.resolved) {
-      return null;
-    }
-
-    const now = Date.now();
-    const guessTime =
-      guess.guessedAt instanceof Date
-        ? guess.guessedAt.getTime()
-        : new Date(guess.guessedAt).getTime();
-    const timeDifference = now - guessTime;
-
-    if (timeDifference < 60000) {
-      return null;
-    }
-
-    const currentPrice = await this.priceService.getLatestBitcoinPrice();
-
-    let result: Result;
-    if (
-      (guess.direction === 'up' && currentPrice > guess.startPrice) ||
-      (guess.direction === 'down' && currentPrice < guess.startPrice)
-    ) {
-      result = Result.correct;
-    } else {
-      result = Result.incorrect;
-    }
-
-    const updatedGuess = await this.prisma.guess.update({
-      where: { id: guessId },
-      data: {
-        resolved: true,
-        isActive: false,
-        endPrice: currentPrice,
-        result,
-      },
-    });
-
-    await this.updateUserScore(guess.userId, result);
-
-    return updatedGuess;
   }
 
   async guessStatus(guessId: string): Promise<GuessResponseDto> {
@@ -115,13 +117,15 @@ export class GuessService {
     return guess as unknown as GuessResponseDto;
   }
 
-  private async updateUserScore(userId: string, result: Result) {
-    const user = await this.prisma.user.findUnique({
+  private async updateUserScore(userId: string, result: Result, tx?: any) {
+    const prismaClient = tx || this.prisma;
+
+    const user = await prismaClient.user.findUnique({
       where: { id: userId },
       select: { guessesPending: true },
     });
 
-    await this.prisma.user.update({
+    await prismaClient.user.update({
       where: { id: userId },
       data: {
         score: {

@@ -68,6 +68,13 @@ describe('GuessService', () => {
       create: jest.fn().mockResolvedValue(mockGuess),
       update: jest.fn().mockResolvedValue(mockResolvedGuess),
     },
+    $transaction: jest.fn().mockImplementation((callback) => {
+      const txMock = {
+        user: { ...mockPrismaService.user },
+        guess: { ...mockPrismaService.guess },
+      };
+      return callback(txMock);
+    }),
   };
 
   const mockPriceService = {
@@ -178,11 +185,9 @@ describe('GuessService', () => {
 
       await service.resolveGuess(guessId);
 
-      expect(prismaService.guess.findUnique).toHaveBeenCalledWith({
-        where: { id: guessId },
-      });
+      expect(prismaService.$transaction).toHaveBeenCalled();
       expect(priceService.getLatestBitcoinPrice).toHaveBeenCalled();
-      expect(prismaService.guess.update).toHaveBeenCalledWith({
+      expect(mockPrismaService.guess.update).toHaveBeenCalledWith({
         where: { id: guessId },
         data: {
           resolved: true,
@@ -215,7 +220,8 @@ describe('GuessService', () => {
 
       await service.resolveGuess(guessId);
 
-      expect(prismaService.guess.update).toHaveBeenCalledWith({
+      expect(prismaService.$transaction).toHaveBeenCalled();
+      expect(mockPrismaService.guess.update).toHaveBeenCalledWith({
         where: { id: guessId },
         data: {
           resolved: true,
@@ -240,10 +246,8 @@ describe('GuessService', () => {
 
       const result = await service.resolveGuess(guessId);
 
-      expect(prismaService.guess.findUnique).toHaveBeenCalledWith({
-        where: { id: guessId },
-      });
-      expect(prismaService.guess.update).not.toHaveBeenCalled();
+      expect(prismaService.$transaction).toHaveBeenCalled();
+      expect(mockPrismaService.guess.update).not.toHaveBeenCalled();
       expect(result).toBeNull();
     });
 
@@ -259,10 +263,8 @@ describe('GuessService', () => {
 
       const result = await service.resolveGuess(guessId);
 
-      expect(prismaService.guess.findUnique).toHaveBeenCalledWith({
-        where: { id: guessId },
-      });
-      expect(prismaService.guess.update).not.toHaveBeenCalled();
+      expect(prismaService.$transaction).toHaveBeenCalled();
+      expect(mockPrismaService.guess.update).not.toHaveBeenCalled();
       expect(result).toBeNull();
     });
   });
@@ -272,14 +274,26 @@ describe('GuessService', () => {
       const guessId = 'guess_123';
       const specificGuess = { ...mockGuess };
 
-      mockPrismaService.guess.findUnique.mockResolvedValueOnce(specificGuess);
+      mockPrismaService.guess.findUnique.mockResolvedValueOnce({
+        ...specificGuess,
+        guessedAt: specificGuess.guessedAt,
+      });
 
       const result = await service.guessStatus(guessId);
 
       expect(prismaService.guess.findUnique).toHaveBeenCalledWith({
         where: { id: guessId },
       });
-      expect(result).toEqual(specificGuess);
+
+      expect(result).toMatchObject({
+        id: specificGuess.id,
+        userId: specificGuess.userId,
+        direction: specificGuess.direction,
+        startPrice: specificGuess.startPrice,
+        isActive: specificGuess.isActive,
+        resolved: specificGuess.resolved,
+        result: specificGuess.result,
+      });
     });
   });
 
