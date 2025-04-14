@@ -1,9 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { GuessService } from './guess.service';
-import { PrismaService } from '../../config/db/prisma.service';
-import { PriceService } from '../../price/services/price.service';
+import { GuessService } from '../guess.service';
+import { PrismaService } from '../../../config/db/prisma.service';
+import { PriceService } from '../../../price/services/price.service';
 import { BadRequestException } from '@nestjs/common';
-import { CreateGuessDto, GuessDirection } from '../dtos/create-guess.dto';
+import { CreateGuessDto, GuessDirection } from '../../dtos/create-guess.dto';
 import { Guess, Result } from '@prisma/client';
 
 describe('GuessService', () => {
