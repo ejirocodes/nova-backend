@@ -135,7 +135,7 @@ export class GuessService {
     });
   }
 
-  async getUserActiveGuess(userId: string) {
+  async getUserActiveGuess(userId: string): Promise<Guess[]> {
     const activeGuess = await this.prisma.guess.findMany({
       where: {
         userId,
@@ -160,9 +160,9 @@ export class GuessService {
     });
 
     console.log({ user });
-    if (!user) {
-      throw new BadRequestException('User not found');
-    }
+    // if (!user) {
+    //   throw new BadRequestException('User not found');
+    // }
 
     const activeGuess = await this.getUserActiveGuess(user.id);
 
@@ -172,5 +172,17 @@ export class GuessService {
       ...user,
       activeGuess: activeGuess.length,
     };
+  }
+
+  async getUserByClerkId(clerkUserId: string) {
+    const user = await this.prisma.user.findUnique({
+      where: { clerk_id: clerkUserId },
+    });
+
+    // if (!user) {
+    //   throw new BadRequestException('User not found');
+    // }
+
+    return user;
   }
 }

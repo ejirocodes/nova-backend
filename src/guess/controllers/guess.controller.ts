@@ -9,6 +9,7 @@ import {
 } from '../dtos/create-guess.dto';
 import { Auth } from 'src/auth/decorators/auth.decorator';
 import { UserId } from 'src/auth/decorators/user.decorator';
+import { GuessDto } from '../dtos/get-guess.dto';
 
 @ApiTags('Guess')
 @Controller('guess')
@@ -46,18 +47,19 @@ export class GuessController {
   @Get('active')
   @ApiOperation({ summary: 'Get user active guess' })
   @ApiResponse({ type: GuessResponseDto })
-  async getUserActiveGuess(@UserId() userId: string) {
-    return await this.guessService.getUserActiveGuess(userId);
+  async getUserActiveGuess(@UserId() clerkUserId: string): Promise<GuessDto[]> {
+    const user = await this.guessService.getUserByClerkId(clerkUserId);
+
+    return await this.guessService.getUserActiveGuess(user.id);
   }
 
   @Get('stats')
   @ApiOperation({ summary: 'Get user guess statistics' })
   @ApiResponse({ type: UserGuessStatsResponseDto })
   async getUserGuessStats(
-    @UserId() userId: string,
+    @UserId() clerkUserId: string,
   ): Promise<UserGuessStatsResponseDto> {
-    console.log('getUserGuessStats', userId);
-    return await this.guessService.getUserGuessStats(userId);
+    return await this.guessService.getUserGuessStats(clerkUserId);
   }
 
   @Post('resolve-all')
