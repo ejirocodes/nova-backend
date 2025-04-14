@@ -1,169 +1,279 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Nova: Bitcoin Price Prediction Game
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A web application that allows users to predict whether the Bitcoin (BTC/USD) price will be higher or lower after one minute.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## Important links
 
-## Description
+- [Backend API](https://nova-backend-production-e68c.up.railway.app/api/v1)
+- [Backend API Docs](https://nova-backend-production-e68c.up.railway.app/api/v1/docs)
+- [Backend Git Repository](https://github.com/ejirocodes/nova-backend)
+- [Frontend](https://thenova.vercel.app)
+- [Frontend Git Repository](https://github.com/ejirocodes/nova-client)
+- [Frontend API Docs](https://thenova.vercel.app/api/v1/docs)
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## Demo
 
-## Project setup
+<video src="./public/demo.mp4" controls></video>
 
-```bash
-$ pnpm install
-```
+## Tech Stack
 
-## Compile and run the project
+### Frontend
 
-```bash
-# development
-$ pnpm run start
+- **React Router 7** - Modern routing framework for React
+- **Clerk** - Authentication and user management
+- **TanStack Query** - Data fetching and state management
+- **Tailwind CSS** - Utility-first CSS framework
+- **Radix UI** - Unstyled, accessible UI components
+- **Recharts** - Composable charting library
+- **TypeScript** - Static type checking
 
-# watch mode
-$ pnpm run start:dev
+### Backend
 
-# production mode
-$ pnpm run start:prod
-```
+- **NestJS** - Progressive Node.js framework
+- **Prisma** - Modern ORM for database interactions
+- **AWS Aurora Serverless** - Serverless relational database
+- **Clerk** - Authentication service
+- **OpenAI** - AI integration
+- **Swagger** - API documentation
+- **Winston** - Logging library
 
-## Run tests
+## End-to-End TypeScript
 
-```bash
-# unit tests
-$ pnpm run test
+The project implements a fully type-safe development experience with automated TypeScript client generation:
 
-# e2e tests
-$ pnpm run test:e2e
+- **OpenAPI Generator** - Automatically generates TypeScript API clients from backend endpoints
+- **Type Consistency** - Ensures type safety between backend and frontend
+- **Developer Experience** - Autocompletion and type checking for all API calls
 
-# test coverage
-$ pnpm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
+The `api-generation.sh` script fetches the latest OpenAPI specifications from the backend and generates type-safe API clients for the frontend:
 
 ```bash
-$ pnpm install -g mau
-$ mau deploy
+# Generate TypeScript API clients
+cd nova-client
+
+bash ./script/api-generation.sh
 ```
 
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
+This approach eliminates type inconsistencies and provides a seamless development experience with full IntelliSense support across the entire application.
 
-## Resources
+Read more about this approach in this [video](https://www.youtube.com/watch?v=-CBpQzdtbOg)
 
-Check out a few resources that may come in handy when working with NestJS:
+## Core Modules
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+### User Module
 
-## Support
+- Handles user registration, authentication, and profile management
+- Maintains user scores
+- Implements secure password hashing and JWT token generation
+- Provides user data persistence in Aurora Serverless
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+### Auth Module
 
-## Stay in touch
+- Manages JWT-based authentication
+- Implements auth guards for protected routes
+- Provides decorators for role-based access control
+- Handles token generation, validation, and refreshing
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+### Guess Module
 
-## License
+- Processes user predictions (up/down)
+- Enforces game rules (one guess at a time, 60-second resolution)
+- Updates user scores based on prediction outcomes
+- Tracks guess status (pending, resolved)
+- Provides historical guess data
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+### Price Module
 
-## DynamoDB Local Setup
+- Connects to external API for real-time BTC/USD price data
+- Caches price data for efficiency
+- Triggers guess resolution when price changes
+- Provides price change notifications
+- Handles price comparison logic for guess resolution
 
-This project uses Amazon DynamoDB for data storage. For local development, you can use DynamoDB Local running in a Docker container.
+## System Architecture
+
+The application follows a client-server architecture:
+
+1. **Frontend (nova-client)**: Next.js application that provides the UI for users to interact with the game.
+
+2. **Backend (nova-backend)**: NestJS application that handles business logic, data persistence, and external API integration.
+
+3. **Database**: AWS Aurora Serverless for storing user data, guesses, and game history.
+
+4. **External API Integration**: Real-time BTC price data fetched from a third-party source (CoinGecko).
+
+## How It Works
+
+1. **User Authentication**:
+
+   - Authentication is powered by Clerk with webhooks to the backend for user management
+   - New users register with google sign in
+   - Returning users log in to access their account
+   - User data is stored in Clerk and synced to Aurora Serverless Postgres via webhooks
+
+2. **Game Flow**:
+
+   - Users see the current BTC/USD price and their score
+   - Users make a prediction (up/down) for the price in 60 seconds
+   - System locks further predictions until current one resolves
+   - After 60+ seconds and a price change, system evaluates the prediction
+   - Score updates (+1 for correct, -1 for incorrect)
+   - User can make a new prediction
+
+3. **Price Tracking**:
+
+   - Backend regularly polls BTC price API
+   - Price changes trigger guess evaluations
+   - Historical prices are stored for verification
+   - Price data is cached for 1 minute to reduce API calls and prevent rate limiting
+   - Price data is stored in Aurora Serverless Postgres
+
+4. **Score Persistence**:
+   - User scores are stored in Aurora Serverless
+   - Scores persist between sessions
+   - Users can return to see their score and continue playing
+
+## Setup and Deployment
 
 ### Prerequisites
 
-- Docker and Docker Compose installed on your machine
+- Node.js 20 (`.nvmrc` for details)
+- AWS account with Aurora Serverless access
+- npm or yarn
 
-### Running DynamoDB Local
+### Local Development
 
-1. Start the DynamoDB Local container:
+**Backend:**
 
 ```bash
 cd nova-backend
-docker-compose up -d
-# or
-pnpm db:local:up
+npm install
+npm run start:dev
 ```
 
-2. Use the `.env.local` file for local development:
+**Frontend:**
 
 ```bash
-cp .env.local .env
-```
-
-3. DynamoDB Local will be available at `http://localhost:8000`
-
-4. You can verify if DynamoDB Local is running:
-
-```bash
-aws dynamodb list-tables --endpoint-url http://localhost:8000
-```
-
-### Running DynamoDB Local with the Application
-
-To start both the DynamoDB Local container and your application with a single command:
-
-```bash
-# Start DynamoDB and then the app (sequential)
+cd nova-client
+pnpm install
 pnpm dev
-
-# Start DynamoDB and the app concurrently
-pnpm dev:full
 ```
 
-### Running Everything with Docker Compose
+### Environment Variables
 
-You can also run both the DynamoDB Local and the NestJS application together using Docker Compose:
+Before setting up your environment variables, check the `.env.template` files in both the backend and frontend repositories for the most up-to-date required variables.
+
+### Deployment
+
+The application is deployed using AWS services:
+
+- Frontend: Vercel
+- Backend: AWS Elastic Beanstalk
+- Database: AWS Aurora Serverless
+
+## Deployment Guide
+
+### Backend Deployment (AWS)
+
+The backend is designed to be deployed as a containerised service on AWS.
+
+#### Option 1: AWS Elastic Beanstalk
+
+1. **Build the application**:
+
+   ```bash
+   cd nova-backend
+   npm run build
+   ```
+
+2. **Create a Dockerfile** in the root of the nova-backend directory:
+
+   ```Dockerfile
+   FROM node:20-alpine
+   WORKDIR /app
+   COPY package*.json ./
+   COPY prisma ./prisma/
+   COPY dist ./dist/
+   RUN npm ci --only=production
+   RUN npx prisma generate
+   EXPOSE 3000
+   CMD ["node", "dist/main"]
+   ```
+
+3. **Deploy to Elastic Beanstalk**:
+
+   - Install the EB CLI: `pip install awsebcli`
+   - Initialise EB: `eb init`
+   - Create environment: `eb create nova-backend-prod`
+   - Deploy: `eb deploy`
+
+4. **Configure environment variables** in the Elastic Beanstalk console:
+   - DB connection parameters
+   - JWT secrets
+   - API keys
+   - Other service credentials
+
+#### Option 2: AWS ECS (Fargate)
+
+1. **Create ECR repository** for the Docker image
+2. **Build and push** the Docker image to ECR
+3. **Create ECS cluster** with Fargate launch type
+4. **Define task and service** using the ECR image
+5. **Configure Auto Scaling** based on your traffic patterns
+
+### Frontend Deployment (Vercel)
+
+The frontend is optimised for deployment on Vercel:
+
+1. **Connect your repository** to Vercel
+2. **Configure environment variables**:
+   ```
+    VITE_API_BASE_URL=
+    VITE_CLERK_PUBLISHABLE_KEY=
+    VITE_CLERK_SECRET_KEY=
+   ```
+3. **Deploy**:
+   - Either through the Vercel dashboard
+   - Or using the Vercel CLI:
+     ```bash
+     cd nova-client
+     vercel
+     ```
+     See [Vercel docs](https://vercel.com/docs/cli) for more information
+
+### Database Deployment (AWS Aurora Serverless)
+
+1. **Create Aurora Serverless cluster** in the AWS Console
+2. **Configure security groups** to allow access from your backend service
+3. **Run migrations**:
+   ```bash
+   cd nova-backend
+   npx prisma migrate deploy
+   ```
+
+### Domain and SSL
+
+1. **Register domain** with AWS Route 53 or your preferred provider
+2. **Configure DNS** to point to your services
+3. **Set up SSL certificates** using AWS Certificate Manager
+
+## Testing
+
+The application includes:
+
+- Unit tests for core business logic
+- Integration tests for API endpoints
+- E2E tests for critical user flows
+
+Run tests with:
 
 ```bash
-# Start both services (app + DynamoDB)
-pnpm docker:dev
-
-# Start both services and rebuild containers
-pnpm docker:dev:build
+npm run test
 ```
 
-This will:
+## Future Improvements
 
-- Start the DynamoDB Local container
-- Build and start the NestJS application container
-- Connect the app to DynamoDB automatically
-- Make the app available at http://localhost:3024
-
-The docker-compose setup uses environment variables from your `.env` file, so make sure you have all the necessary variables defined there. You don't need to manually copy `.env.local` to `.env` when using Docker Compose, as all the environment variables are sourced directly from your `.env` file.
-
-> **Important**: When running the app in Docker, make sure your `.env` file has `HOST=0.0.0.0` (not localhost). This ensures the app is accessible from outside the container.
-
-Note: For local development, the application automatically connects to the local DynamoDB instance when `NODE_ENV=development`.
+- Real-time updates using WebSockets
+- User leaderboards
+- More sophisticated prediction options
+- Mobile app version
