@@ -5,7 +5,7 @@ import {
   UserGuessStatsResponseDto,
 } from '../dtos/create-guess.dto';
 import { generateUniqueId } from 'src/helpers/uuid.generator';
-import { PriceService } from 'src/price/services/price.service';
+import { PriceService } from 'src/modules/price/services/price.service';
 import { PrismaService } from 'src/config/db/prisma.service';
 import { Guess, Result } from '@prisma/client';
 

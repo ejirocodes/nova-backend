@@ -10,13 +10,13 @@ import {
 } from '../dtos/create-guess.dto';
 import { GuessDto } from '../dtos/get-guess.dto';
 
-jest.mock('../../auth/decorators/auth.decorator', () => ({
+jest.mock('../../../auth/decorators/auth.decorator', () => ({
   Auth: jest.fn().mockImplementation(() => {
     return jest.fn();
   }),
 }));
 
-jest.mock('../../auth/decorators/user.decorator', () => ({
+jest.mock('../../../auth/decorators/user.decorator', () => ({
   UserId: jest.fn().mockImplementation(() => {
     return jest.fn();
   }),
@@ -94,7 +94,7 @@ describe('GuessController', () => {
       ],
     })
       .overrideGuard(
-        jest.requireMock('../../auth/decorators/auth.decorator').Auth,
+        jest.requireMock('../../../auth/decorators/auth.decorator').Auth,
       )
       .useValue({ canActivate: () => true })
       .compile();

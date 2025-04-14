@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ResolutionService } from '../resolution.service';
 import { GuessService } from '../guess.service';
-import { PrismaService } from '../../../config/db/prisma.service';
+import { PrismaService } from '../../../../config/db/prisma.service';
 import { Logger } from '@nestjs/common';
 
 describe('ResolutionService', () => {

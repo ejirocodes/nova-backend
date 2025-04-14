@@ -1,4 +1,3 @@
-import { ASSETS } from './../../common/api/constants/assets.const';
 import {
   Injectable,
   Logger,
@@ -11,8 +10,9 @@ import {
 } from '../interfaces/price.interface';
 import { firstValueFrom } from 'rxjs';
 import { HttpService } from '@nestjs/axios';
-import { AppConfig } from '../../config/app.config';
 import { BitcoinPricePeriod } from '../dtos/bitcoin-price.dto';
+import { AppConfig } from 'src/config/app.config';
+import { ASSETS } from 'src/common/api/constants/assets.const';
 @Injectable()
 export class PriceService {
   private readonly logger = new Logger(PriceService.name);
