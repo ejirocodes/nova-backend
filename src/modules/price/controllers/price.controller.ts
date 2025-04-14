@@ -4,6 +4,7 @@ import { BitcoinPriceQueryDto } from './../dtos/bitcoin-price.dto';
 import { BitcoinPriceResponse } from './../interfaces/price.interface';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Auth } from 'src/auth/decorators/auth.decorator';
+
 @ApiTags('Price')
 @Controller('price')
 @Auth()
