@@ -62,6 +62,7 @@ describe('GuessController', () => {
     score: 5,
     guessesMade: 10,
     guessesLost: 5,
+    guessesWon: 0,
     guessesPending: 0,
     activeGuess: 0,
   };

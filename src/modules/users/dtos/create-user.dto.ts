@@ -31,6 +31,10 @@ export class CreateUserDto {
   @IsOptional()
   guessesLost: number = 0;
 
+  @IsNumber({}, { message: 'GuessesWon must be a number' })
+  @IsOptional()
+  guessesWon: number = 0;
+
   @IsNumber({}, { message: 'GuessesPending must be a number' })
   @IsOptional()
   guessesPending: number = 0;

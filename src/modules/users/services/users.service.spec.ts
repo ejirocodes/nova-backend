@@ -14,6 +14,7 @@ describe('UsersService', () => {
     score: 0,
     guessesMade: 0,
     guessesLost: 0,
+    guessesWon: 0,
     guessesPending: 0,
     createdAt: new Date(),
     updatedAt: new Date(),

@@ -129,6 +129,7 @@ export class GuessService {
         },
         guessesMade: { increment: 1 },
         guessesLost: result === Result.incorrect ? { increment: 1 } : undefined,
+        guessesWon: result === Result.correct ? { increment: 1 } : undefined,
         guessesPending:
           user?.guessesPending && user.guessesPending > 0
             ? { decrement: 1 }
@@ -157,6 +158,7 @@ export class GuessService {
         score: true,
         guessesMade: true,
         guessesLost: true,
+        guessesWon: true,
         guessesPending: true,
         id: true,
       },

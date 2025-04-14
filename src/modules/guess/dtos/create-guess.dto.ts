@@ -110,6 +110,12 @@ export class UserGuessStatsResponseDto {
 
   @ApiProperty({
     type: Number,
+    description: 'The number of guesses won by the user',
+  })
+  guessesWon: number;
+
+  @ApiProperty({
+    type: Number,
     description: 'The number of guesses pending by the user',
   })
   guessesPending: number;

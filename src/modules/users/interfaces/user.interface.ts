@@ -5,6 +5,7 @@ export interface User {
   score: number;
   guessesMade: number;
   guessesLost: number;
+  guessesWon: number;
   guessesPending: number;
   activeGuess?: {
     guessId: string;

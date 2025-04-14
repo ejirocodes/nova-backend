@@ -45,6 +45,7 @@ export class WebhooksService {
           createdAt: new Date(created_at),
           updatedAt: new Date(updated_at),
           guessesLost: 0,
+          guessesWon: 0,
           guessesMade: 0,
           guessesPending: 0,
           score: 0,
