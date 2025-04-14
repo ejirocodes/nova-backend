@@ -56,8 +56,16 @@ model Price {
   value     Float
   currency  String   @default("USD")
   timestamp DateTime @default(now())
+  asset     String   @default("bitcoin")
+  period    String?
+
+  priceChange24h   Float?
+  percentChange24h Float?
+  historyData      Json?
+  expiresAt        DateTime?
 
   @@index([timestamp])
+  @@index([asset, period])
   @@map("prices")
 }
 
