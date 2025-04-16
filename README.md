@@ -35,7 +35,6 @@ https://github.com/user-attachments/assets/77ddfe3f-268a-4925-92fe-42bbebb5989d
 - **Prisma** - Modern ORM for database interactions
 - **AWS Aurora Serverless** - Serverless relational database
 - **Clerk** - Authentication service
-- **OpenAI** - AI integration
 - **Swagger** - API documentation
 - **Winston** - Logging library
 
