@@ -95,7 +95,7 @@ Read more about this approach in this [video](https://www.youtube.com/watch?v=-C
 
 The application follows a client-server architecture:
 
-1. **Frontend (nova-client)**: Next.js application that provides the UI for users to interact with the game.
+1. **Frontend (nova-client)**: React Router V7 application that provides the UI for users to interact with the game.
 
 2. **Backend (nova-backend)**: NestJS application that handles business logic, data persistence, and external API integration.
 
