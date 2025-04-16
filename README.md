@@ -15,7 +15,7 @@ https://github.com/user-attachments/assets/77ddfe3f-268a-4925-92fe-42bbebb5989d
 - [Backend Git Repository](https://github.com/ejirocodes/nova-backend)
 - [Frontend](https://thenova.vercel.app)
 - [Frontend Git Repository](https://github.com/ejirocodes/nova-client)
-- [Frontend API Docs](https://thenova.vercel.app/api/v1/docs)
+
 
 ## Tech Stack
 
